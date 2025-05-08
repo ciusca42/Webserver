@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webserver</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0 0 20px;
+            font-size: 2.5rem;
+            color: #ffcc00;
+        }
+
+        p {
+            margin: 0 0 20px;
+            font-size: 1.1rem;
+        }
+
+        label {
+            display: inline-block;
+            background: #ffcc00;
+            color: #000;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        label:hover {
+            background: #ff9900;
+        }
+
+        .upload-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            background: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		#body {
+			padding-bottom: 8rem;
+		}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Webserver</h1>
+        <p>Create or modify an entry</p>
+        <form action="/entries/entry.html" method="POST" id="form">
+            <input id="title" type="text" placeholder="File title" name="filename" value=""/>
+			<input id="body" type="text" value="" placeholder="File content" name="filebody"></input>
+            <button type="submit" onsubmit="submitevent()">Upload (x-www-form-urlencoded)</button>
+        </form>
+        <button onclick="makeRequest()">Upload (json)</button>
+    </div>
+    <script>
+        // Show the selected file name
+        const fileTitle = document.getElementById('title');
+        const fileBody = document.getElementById('body');
+        const form = getElementById('form');
+
+
+        async function makeRequest() {
+            const request = new Request("/entries/entry.html", {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify({ 
+                filename: fileTitle.value, 
+                filebody: fileBody.value
+             }),
+            });
+
+            const response = await fetch(request);
+            response.json().then((data) => {
+                console.log(data);
+            });
+        }
+    </script>
+</body>
+</html>
